@@ -15,7 +15,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.5.0",
     "html-webpack-plugin": "^5.5.0",
     "json-server": "^0.17.1",
     "mini-css-extract-plugin": "^2.6.1",
@@ -30,10 +30,12 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "babel-loader": "^8.2.5",
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
-    "chart.js": "^3.9.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "less": "^4.1.1",
     "regenerator-runtime": "^0.13.9",
     "toastr": "^2.1.4"
