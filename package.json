@@ -6,7 +6,8 @@
   "scripts": {
     "webpack": "webpack",
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack serve --open"
+    "watch": "webpack serve --open",
+    "start": "node server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",

@@ -31,7 +31,11 @@ module.exports = {
     },
     target: 'web',
     devServer: { 
-      static: "./dist"
+      static: "./dist",
+      proxy: {
+      '/api': 'http://localhost:3000', // Proxy API requests to your backend server
+      },
+      port: 8081, // Frontend runs on port 8081
     }, 
     /* no separate source map files in production */
     devtool: !isProduction ? 'source-map' : 'inline-source-map', 
@@ -81,15 +85,15 @@ module.exports = {
           {
             from: path.resolve(__dirname, "src/assets/images"),
             to: path.resolve(__dirname, "dist/assets/images"),
+            noErrorOnMissing: true, // this prevents the error if folder is missing/empty
           },
         ],
       }),
       /* app uses global SERVER_URL rather than process.env.SERVER_URL */
       new webpack.DefinePlugin({
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        SERVER_URL: JSON.stringify(process.env.SERVER_URL),
-        GMAP_KEY: JSON.stringify(process.env.GMAP_KEY),
-        AMAP_KEY: JSON.stringify(process.env.AMAP_KEY),
+        APP_URL: JSON.stringify(process.env.APP_URL),
+        PORT: JSON.stringify(process.env.PORT),
       }),
     ],
     /* separates js (and css) that is shared between bundles - allows browser to cache */
