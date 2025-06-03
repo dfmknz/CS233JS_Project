@@ -1,3 +1,6 @@
+Go to https://openrouter.ai/ for an api key
+
+
 For running dev environment:
 
 
