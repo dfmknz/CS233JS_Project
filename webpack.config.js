@@ -21,7 +21,7 @@ const fileNamePrefix = isProduction? '[chunkhash].' : '';
 module.exports = {
     mode: !isProduction ? 'development': 'production',
     entry: {
-      home: './src/js/home.js',
+      home: !isProduction ? './src/js/home.js': './src/js/index.js',
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -95,6 +95,7 @@ module.exports = {
         APP_URL: JSON.stringify(process.env.APP_URL),
         APP_DOMAIN: JSON.stringify(process.env.APP_DOMAIN),
         PORT: JSON.stringify(process.env.PORT),
+        OPENROUTER_API_KEY: JSON.stringify(process.env.OPENROUTER_API_KEY),
       }),
     ],
     /* separates js (and css) that is shared between bundles - allows browser to cache */
