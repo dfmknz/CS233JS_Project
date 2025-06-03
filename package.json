@@ -6,8 +6,7 @@
   "scripts": {
     "webpack": "webpack",
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack serve --open",
-    "start": "node server.js"
+    "watch": "webpack serve --open"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -31,12 +30,9 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "axios": "^1.9.0",
     "babel-loader": "^8.2.5",
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
     "less": "^4.1.1",
     "regenerator-runtime": "^0.13.9",
     "toastr": "^2.1.4"
