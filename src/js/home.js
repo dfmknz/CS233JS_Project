@@ -32,7 +32,7 @@ class ChatApp {
     try {
       console.log(`Sending request to backend...`);
 
-      const response = await fetch(`http://localhost:3000/api/completions`, {
+      const response = await fetch(`${APP_DOMAIN}:${PORT}/api/completions`, {
         method: `POST`,
         headers: {
           'Content-Type': `application/json`,

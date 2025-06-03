@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 //app.use(cors()); // Enable CORS for frontend requests
 app.use(cors({
-  origin: 'http://localhost:8081', // Allow requests from the frontend
+  origin: process.env.APP_DOMAIN + ':8081', // Allow requests from the frontend
 }));
 
 app.use(express.json()); // parse JSON request bodies
