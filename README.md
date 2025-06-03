@@ -8,6 +8,4 @@ add api key to a new .env file (using included example)
 
 npm install
 
-
-
-npm run watch # run this in a seperate terminal session
+npm run watch
