@@ -112,8 +112,6 @@ class ChatApp {
     }
     // back to string we go
     localStorage.setItem('history', JSON.stringify(history));
-
-    console.log(this.getRecentHistory(timestamp));
   }
   // give me my history back
   parseHistory()
