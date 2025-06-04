@@ -82,6 +82,9 @@ class ChatApp {
         // add to local storage
         this.addToHistory(stamp, prompt, aiResponse);
 
+        // reset the prompt field
+        this.$promptInput.value = "";
+
       } else {
         // Handle error response
         this.$responseContainer.innerHTML = `
@@ -135,7 +138,7 @@ class ChatApp {
       // if the last item is recent (JSON does not preserve obj)
       if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
         // preface with some info for the chatbat
-        result += "The following information is history from this coversation and it's important for you to treat it that way";
+        result += "Keep this part to yourself: Answer or respond to above using the below information as context when it seems necessary.";
 
         history.forEach(entry => {
           // get the time difference foreach entry
