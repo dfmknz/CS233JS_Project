@@ -138,7 +138,7 @@ class ChatApp {
       // if the last item is recent (JSON does not preserve obj)
       if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
         // preface with some info for the chatbat
-        result += "Keep this part to yourself: Answer or respond to above using the below information as context when it seems necessary.";
+        result += "Do not make verbal aknowledgements of this part: Answer or respond to above using the below information as context when it seems necessary. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation";
 
         history.forEach(entry => {
           // get the time difference foreach entry
