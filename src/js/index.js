@@ -1,5 +1,5 @@
-// Combined JavaScript file - Created by Drew McKenzie
-// Combines client-side chat functionality with direct API calls
+// Created by Drew McKenzie, 5/28/25
+
 
 
 import './general';
@@ -17,14 +17,11 @@ class ChatApp {
     this.$promptInput = document.getElementById(`prompt-input`);
     this.$responseContainer = document.getElementById(`response-container`);
 
-    // example prompt for testing
-    //this.$promptInput.value = `Write a small JSON file with some common regular expressions without using any nested braces. Give me only the JSON, nothing else.`;
-
     // Add event listeners
     this.$form.onsubmit = this.onFormSubmit.bind(this);
 
     if (module.hot) {
-      module.hot.accept();
+      module.hot.accept(); // helps to make dev changes without reload
     }
   }
 
@@ -54,7 +51,7 @@ class ChatApp {
         //model: 'meta-llama/llama-3.3-8b-instruct:free'
       };
 
-      // Direct call to OpenRouter API (instead of going through Express server)
+      // call to OpenRouter API
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: `POST`,
         headers: {
@@ -91,4 +88,3 @@ class ChatApp {
 }
 
 window.onload = () => {new ChatApp()};
-//document.addEventListener(`DOMContentLoaded`, () => );
