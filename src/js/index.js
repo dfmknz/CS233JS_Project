@@ -223,9 +223,9 @@ class ChatApp {
 
   updateModelInfo(model) {
     // display model info on the page
-    this.$modelInfo.insertAdjacentHTML('beforeend', `
+    this.$modelInfo.innerHTML = `
         <p><strong>Model:</strong> ${model}</p>
-      `);
+      `;
   }
   
 }
