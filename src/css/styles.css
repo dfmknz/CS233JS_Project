@@ -62,7 +62,7 @@ button:hover {
   color: #666;
   font-style: italic;
 }
-#response-placeholder {
+#response-placeholder, #loading-state{
   visibility: hidden;
 }
 #log-title{

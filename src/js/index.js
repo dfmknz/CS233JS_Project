@@ -25,6 +25,7 @@ class ChatApp {
     this.$responsePlaceholder = document.getElementById('response-placeholder');
     this.$modelInfo = document.getElementById('model-info');
     this.$retentionSelect = document.getElementById('retention');
+    this.$loadingState = document.getElementById('loading-state');
 
     this.addEventListeners();
    
@@ -63,8 +64,8 @@ class ChatApp {
     const prompt = this.$promptInput.value.trim();
     if (!prompt) return;
 
-    // Show loading state
-    this.$responseContainer.insertAdjacentHTML('beforeend', `<div class="loading">Generating response...</div>`);
+    this.toggleLoadingState();
+    //this.$responseContainer.insertAdjacentHTML('beforeend', `<div class="loading">Generating response...</div>`);
 
     try {
       console.log(`Sending request to OpenRouter...`);
@@ -101,6 +102,8 @@ class ChatApp {
         const aiResponse = data.choices[0].message.content;
         const stampStr = stamp.toLocaleTimeString();
 
+        this.toggleLoadingState();
+
         // update the page
         this.updateModelInfo(data.model);
         this.addToContainer(stampStr, prompt, aiResponse);
@@ -114,6 +117,8 @@ class ChatApp {
         this.scrollToElementStart(this.$prompts[this.$prompts.length - 1]);
         
       } else {
+        this.toggleLoadingState();
+
         // Handle error response
         this.$responseContainer.insertAdjacentHTML('beforeend', `
           <div class="error">Error: ${data.error?.message || `Unknown error`}</div>
@@ -227,7 +232,7 @@ class ChatApp {
     historyObj.forEach(entry => {
       prompt = entry.prompt.toString();
       response = entry.response.toString();
-      this.addToContainer(prompt, response, entry.timestamp);
+      this.addToContainer(entry.timestamp, prompt, response);
       console.log(entry);
     });
   }
@@ -259,6 +264,13 @@ class ChatApp {
       val = val * HOUR;
     }
     return val;
+  }
+  toggleLoadingState()
+  {
+    if( this.$loadingState.style.visibility == 'visible')
+      this.$loadingState.style.visibility = 'hidden';
+    else
+      this.$loadingState.style.visibility = 'visible';
   }
   
 }
