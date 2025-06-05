@@ -103,7 +103,7 @@ class ChatApp {
 
         // update the page
         this.updateModelInfo(data.model);
-        this.addToContainer(prompt, aiResponse, stamp);
+        this.addToContainer(stampStr, prompt, aiResponse);
 
         // add to local storage
         this.addToHistory(stamp, prompt, aiResponse);
@@ -211,7 +211,7 @@ class ChatApp {
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  addToContainer(prompt, response, timestamp) {
+  addToContainer(timestamp, prompt, response) {
     // add current response
     this.$responseContainer.insertAdjacentHTML('beforeend', `
       <div class="prompt">${prompt}</div>
@@ -227,11 +227,7 @@ class ChatApp {
     historyObj.forEach(entry => {
       prompt = entry.prompt.toString();
       response = entry.response.toString();
-      this.$responseContainer.insertAdjacentHTML('beforeend', `
-        <div class="prompt">${prompt}</div>
-        <div class="response">${response}</div>
-        <p><small>Response time: ${entry.timestamp}</small></p>
-      `);
+      this.addToContainer(prompt, response, entry.timestamp);
       console.log(entry);
     });
   }
