@@ -256,15 +256,16 @@ class ChatApp {
   calculateRetention()
   {
     let val = this.$retentionSelect.value;
+    let multiplier = 0;
     // if the last char is m for minutes
     if (val[val.length - 1] === "m") {
-      val = Number(val.substr(0, val.length - 1)); // extract the number
-      val = val * MINUTE;
+      multiplier = MINUTE;
     }
     if (val[val.length - 1] === "h") {
-      val = Number(val.substr(0, val.length - 1)); // extract the number
-      val = val * HOUR;
+      multiplier = HOUR;
     }
+    val = Number(val.substr(0, val.length - 1)); // extract the number
+    val = val * multiplier;
     return val;
   }
   toggleLoadingState()
