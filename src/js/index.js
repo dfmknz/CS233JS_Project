@@ -50,7 +50,7 @@ class ChatApp {
     this.$promptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
-          this.$form.requestSubmit();
+          this.$form.requestSubmit(); // must use request here
       }
     });
   }
