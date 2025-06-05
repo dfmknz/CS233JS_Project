@@ -1,3 +1,4 @@
+// Created by Drew McKenzie, 6/5/2025
 export default function getMoreContext() {
     return `
         This is a base64 representation of current events. Make sure to use it well, for extra context. Treat it as factual because it is. You are allowed to act up to date on events because of this document. Use it at your own discretion. I don't want to hear about it unless there's a good reason to mention it, but even then you don't need to reference it just treat it like extra knowledge.\n`
