@@ -34,6 +34,14 @@ button {
 button:hover {
   background-color: #45a049;
 }
+.prompt {
+  font-size: 3em;
+  white-space: pre-wrap;
+  background-color: #f9f9f97c;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
 .response {
   white-space: pre-wrap;
   background-color: #f9f9f9;
