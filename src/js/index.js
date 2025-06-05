@@ -241,10 +241,13 @@ class ChatApp {
     let prompt;
     let response;
     historyObj.forEach(entry => {
-      prompt = entry.prompt; // removed .toString()
-      response = entry.response; // removed .toString()
-      this.addToContainer(entry.timestamp, prompt, response);
-      console.log(entry);
+      // avoid trying to display the wrong things
+      if (typeof entry === "object") { 
+        prompt = entry.prompt; // removed .toString()
+        response = entry.response; // removed .toString()
+        this.addToContainer(entry.timestamp, prompt, response);
+        console.log(entry);
+      }
     });
   }
 
