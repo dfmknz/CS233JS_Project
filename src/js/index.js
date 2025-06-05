@@ -25,6 +25,10 @@ class ChatApp {
       // many changes still need a dev server restart (sadly)
       module.hot.accept();  
     }
+    // get recent history and add it to the container
+    this.addHistoryToContainer(this.getRecentHistory(new Date()));
+
+    this.scrollToElementStart(this.$responseContainer.lastElementChild);
   }
 
   async onFormSubmit(event) {
@@ -36,7 +40,7 @@ class ChatApp {
     if (!prompt) return;
 
     // Show loading state
-    this.$responseContainer.innerHTML = `<div class="loading">Generating response...</div>`;
+    this.$responseContainer.insertAdjacentHTML('beforeend', `<div class="loading">Generating response...</div>`);
 
     try {
       console.log(`Sending request to OpenRouter...`);
@@ -46,7 +50,7 @@ class ChatApp {
         messages: [
           {
             role: `user`,
-            content: prompt + "\n" + this.getRecentHistory(stamp),
+            content: prompt + "\n" + this.getRecentHistoryForBot(stamp),
           },
         ],
         model: 'deepseek/deepseek-chat:free' // Using the model from your server.js
@@ -73,11 +77,8 @@ class ChatApp {
         // Display the response
         const aiResponse = data.choices[0].message.content;
         const stampStr = stamp.toLocaleTimeString();
-        this.$responseContainer.innerHTML = `
-          <div class="response">${aiResponse}</div>
-          <p><strong>Model:</strong> ${data.model}</p>
-          <p><small>Response time: ${stampStr}</small></p>
-        `;
+
+        this.addToContainer(prompt, aiResponse, data.model, stamp);
 
         // add to local storage
         this.addToHistory(stamp, prompt, aiResponse);
@@ -85,16 +86,18 @@ class ChatApp {
         // reset the prompt field
         this.$promptInput.value = "";
 
+        this.scrollToElementStart(this.$responseContainer.children[parent.children.length - 1]);
+
       } else {
         // Handle error response
-        this.$responseContainer.innerHTML = `
+        this.$responseContainer.insertAdjacentHTML('beforeend', `
           <div class="error">Error: ${data.error?.message || `Unknown error`}</div>
           <pre>${JSON.stringify(data, null, 2)}</pre>
-        `;
+        `);
       }
     } catch (error) {
       console.error(`Error:`, error);
-      this.$responseContainer.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      this.$responseContainer.insertAdjacentHTML('beforeend', `<div class="error">Error: ${error.message}</div>`);
     }
   }
   // keep a chat history with local storage
@@ -113,13 +116,39 @@ class ChatApp {
     // back to string we go
     localStorage.setItem('history', JSON.stringify(history));
   }
-  // give me my history back
-  parseHistory()
-  {
-    let history = JSON.parse(localStorage.getItem('history') || '[]');
-    return history;
-  }
+  
+  // returns an array of history objects
   getRecentHistory(timestamp)
+  {
+    // some time variables
+    const second = 1000;
+    const minute = 60 * second;
+    const hour = 60 * minute;
+
+    const myRange = minute * 60; // custom range
+
+    let history = JSON.parse(localStorage.getItem('history') || '[]');
+    let result = [];
+
+    // if history exists
+    if (history.length > 0) {
+      // if the last item is recent (JSON does not preserve obj)
+      if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
+
+        history.forEach(entry => {
+          // get the time difference foreach entry
+          if ((timestamp - new Date(entry.timestamp)) < myRange)
+          {
+            // add the entry to the result
+            result.push(entry);
+          }
+        });
+      }
+    }
+    return result;
+  }
+  // returns a string with history meant for use with the prompt
+  getRecentHistoryForBot(timestamp)
   {
     // some time variables
     const second = 1000;
@@ -135,25 +164,55 @@ class ChatApp {
     if (history.length > 0) {
       // if the last item is recent (JSON does not preserve obj)
       if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
+        
         // preface with some info for the chatbat
         result += "Do not make verbal aknowledgements of this part: Answer or respond to above using the below information as context when it seems necessary. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation. Make sure to respond to the above. The below is only for context";
+      
 
         history.forEach(entry => {
           // get the time difference foreach entry
           if ((timestamp - new Date(entry.timestamp)) < myRange)
           {
             // add the entry to the result
+            
             result += "\n" + JSON.stringify(entry);
+            
           }
         });
       }
       else {
+        
         result += "You can treat this as the start of a new conversation";
       }
     }
     return result;
   }
 
+  scrollToElementStart(element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  addToContainer(prompt, response, model, timestamp) {
+    // add current response
+    this.$responseContainer.insertAdjacentHTML('beforeend', `
+      <div class="prompt">${prompt}</div>
+      <div class="response">${response}</div>
+      <p><strong>Model:</strong> ${model}</p>
+      <p><small>Response time: ${timestamp.toLocaleTimeString()}</small></p>
+    `);
+  }
+
+  addHistoryToContainer(historyObj)
+  {
+    historyObj.forEach(entry => {
+      this.$responseContainer.insertAdjacentHTML('beforeend', `
+        <div class="prompt">${entry.prompt}</div>
+        <div class="response">${entry.response}</div>
+        <p><small>Response time: ${entry.timestamp}</small></p>
+      `);
+      console.log(entry);
+    });
+  }
   
 }
 
