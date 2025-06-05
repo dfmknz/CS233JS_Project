@@ -35,19 +35,21 @@ button:hover {
   background-color: #45a049;
 }
 .prompt {
-  font-size: 3em;
+  font-size: 2em;
   white-space: pre-wrap;
-  background-color: #f9f9f97c;
-  padding: 15px;
+  background-color: #f9f9f900;
+  padding: 5px;
   border-radius: 4px;
   margin-top: 20px;
+  line-height: -3px;
 }
 .response {
   white-space: pre-wrap;
   background-color: #f9f9f9;
-  padding: 15px;
+  padding: 20px;
   border-radius: 4px;
   margin-top: 20px;
+  margin-left: 10px;
 }
 .error {
   color: #d32f2f;

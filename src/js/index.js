@@ -209,7 +209,7 @@ class ChatApp {
       this.$responseContainer.insertAdjacentHTML('beforeend', `
         <div class="prompt">${entry.prompt}</div>
         <div class="response">${entry.response}</div>
-        <p><small>Response time: ${entry.timestamp}</small></p>
+        <p><small>Response time: ${new Date(entry.timestamp).toLocaleTimeString()}</small></p>
       `);
       console.log(entry);
     });
