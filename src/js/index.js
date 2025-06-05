@@ -16,6 +16,7 @@ class ChatApp {
     this.$form = document.getElementById(`chat-form`);
     this.$promptInput = document.getElementById(`prompt-input`);
     this.$responseContainer = document.getElementById(`response-container`);
+    this.$prompts = this.$responseContainer.getElementsByClassName('prompt');
 
     // Add event listeners
     this.$form.onsubmit = this.onFormSubmit.bind(this);
@@ -28,7 +29,7 @@ class ChatApp {
     // get recent history and add it to the container
     this.addHistoryToContainer(this.getRecentHistory(new Date()));
 
-    this.scrollToElementStart(this.$responseContainer.lastElementChild);
+    this.scrollToElementStart(this.$form);
   }
 
   async onFormSubmit(event) {
@@ -86,8 +87,8 @@ class ChatApp {
         // reset the prompt field
         this.$promptInput.value = "";
 
-        this.scrollToElementStart(this.$responseContainer.children[parent.children.length - 1]);
-
+        this.scrollToElementStart(this.$prompts[this.$prompts.length - 1]);
+        
       } else {
         // Handle error response
         this.$responseContainer.insertAdjacentHTML('beforeend', `
