@@ -47,6 +47,12 @@ class ChatApp {
     this.$retentionSelect.addEventListener('change', () => {
       localStorage.setItem('retention', this.$retentionSelect.value);
     });
+    this.$promptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          this.$form.requestSubmit();
+      }
+    });
   }
 
   async onFormSubmit(event) {
