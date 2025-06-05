@@ -65,3 +65,6 @@ button:hover {
 #response-placeholder {
   visibility: hidden;
 }
+#log-title{
+  text-decoration: underline;
+}
