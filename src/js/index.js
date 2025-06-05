@@ -56,6 +56,10 @@ class ChatApp {
           this.$form.requestSubmit(); // must use request here
       }
     });
+    this.$promptInput.addEventListener('input', function() {
+      this.style.height = ""; // Reset the height
+      this.style.height = this.scrollHeight + "px"; // Set height to content
+    });
   }
 
   async onFormSubmit(event) {
