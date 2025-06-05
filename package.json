@@ -34,6 +34,7 @@
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1",
+    "marked": "^15.0.12",
     "regenerator-runtime": "^0.13.9",
     "toastr": "^2.1.4"
   }

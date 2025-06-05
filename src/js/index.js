@@ -1,12 +1,13 @@
 // Created by Drew McKenzie, 5/28/25
 
-
-
 import './general';
-const regeneratorRuntime = require("regenerator-runtime");
-
 import toastr from 'toastr';
 import 'toastr/toastr.scss';
+import { marked } from 'marked'; // helps with markdown formatting
+
+const regeneratorRuntime = require("regenerator-runtime");
+
+
 
 // Environment configuration
 const APP_URL = APP_URL || 'http://localhost:3000';
@@ -99,7 +100,8 @@ class ChatApp {
       console.log(`Received response:`, data);
 
       if (response.ok) {
-        const aiResponse = data.choices[0].message.content;
+        // wrapp the response in a marked markdown formatter
+        const aiResponse = marked(data.choices[0].message.content);
         const stampStr = stamp.toLocaleTimeString();
 
         this.toggleLoadingState();
