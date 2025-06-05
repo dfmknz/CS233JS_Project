@@ -13,10 +13,11 @@ const APP_URL = APP_URL || 'http://localhost:3000';
 
 class ChatApp {
   constructor() {
-    this.$form = document.getElementById(`chat-form`);
-    this.$promptInput = document.getElementById(`prompt-input`);
-    this.$responseContainer = document.getElementById(`response-container`);
+    this.$form = document.getElementById('chat-form');
+    this.$promptInput = document.getElementById('prompt-input');
+    this.$responseContainer = document.getElementById('response-container');
     this.$prompts = this.$responseContainer.getElementsByClassName('prompt');
+    this.$responsePlaceholder = document.getElementById('response-placeholder');
 
     // Add event listeners
     this.$form.onsubmit = this.onFormSubmit.bind(this);
@@ -26,6 +27,7 @@ class ChatApp {
       // many changes still need a dev server restart (sadly)
       module.hot.accept();  
     }
+    this.$responsePlaceholder.style.visibility = 'hidden'; // default to hidden
     // get recent history and add it to the container
     this.addHistoryToContainer(this.getRecentHistory(new Date()));
 
@@ -145,6 +147,9 @@ class ChatApp {
           }
         });
       }
+    }
+    else {
+      this.$responsePlaceholder.style.visibility = 'visible';
     }
     return result;
   }
