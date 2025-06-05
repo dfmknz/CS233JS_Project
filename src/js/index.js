@@ -160,6 +160,7 @@ class ChatApp {
           if ((timestamp - new Date(entry.timestamp)) < myRange)
           {
             // add the entry to the result
+            entry.timestamp = new Date(entry.timestamp).toLocaleTimeString();
             result.push(entry);
           }
         });
@@ -191,8 +192,8 @@ class ChatApp {
           // get the time difference foreach entry
           if ((timestamp - new Date(entry.timestamp)) < myRange)
           {
+            entry.timestamp = new Date(entry.timestamp).toLocaleTimeString();
             // add the entry to the result
-            
             result += "\n" + JSON.stringify(entry);
             
           }
