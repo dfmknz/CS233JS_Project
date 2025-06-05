@@ -1,7 +1,7 @@
 {
   "name": "openrounterapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "A chatbot with local context retention using OpenRouter",
   "main": "index.html",
   "scripts": {
     "webpack": "webpack",
