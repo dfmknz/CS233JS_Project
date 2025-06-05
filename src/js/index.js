@@ -4,7 +4,7 @@ import './general';
 import toastr from 'toastr';
 import 'toastr/toastr.scss';
 import { marked } from 'marked'; // helps with markdown formatting
-import getFileText from './file.js';
+import getMoreContext from './data.js';
 
 const regeneratorRuntime = require("regenerator-runtime");
 
@@ -82,7 +82,7 @@ class ChatApp {
         messages: [
           {
             role: `user`,
-            content: this.getRecentHistoryForBot(stamp) + prompt,
+            content: getMoreContext() + "\n" + this.getRecentHistoryForBot(stamp) + "\n" + prompt,
           },
         ],
         // this one is rated higher
