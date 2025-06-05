@@ -4,6 +4,7 @@ import './general';
 import toastr from 'toastr';
 import 'toastr/toastr.scss';
 import { marked } from 'marked'; // helps with markdown formatting
+import getFileText from './file.js';
 
 const regeneratorRuntime = require("regenerator-runtime");
 
@@ -84,10 +85,12 @@ class ChatApp {
             content: this.getRecentHistoryForBot(stamp) + prompt,
           },
         ],
-        model: 'deepseek/deepseek-chat:free' // Using the model from your server.js
-        //model: 'deepseek/deepseek-coder:free' // Alternative for coding tasks
-        //model: 'deepseek/deepseek-v3-base:free'
-        //model: 'meta-llama/llama-3.3-8b-instruct:free'
+        // this one is rated higher
+        model: 'deepseek/deepseek-chat-v3-0324:free'
+        
+        // this one is supposed to stay fairly up to date
+        //model: 'deepseek/deepseek-chat:free'
+        
       };
 
       // call to OpenRouter API
