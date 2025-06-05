@@ -18,6 +18,7 @@ class ChatApp {
     this.$responseContainer = document.getElementById('response-container');
     this.$prompts = this.$responseContainer.getElementsByClassName('prompt');
     this.$responsePlaceholder = document.getElementById('response-placeholder');
+    this.$modelInfo = document.getElementById('model-info');
 
     // Add event listeners
     this.$form.onsubmit = this.onFormSubmit.bind(this);
@@ -48,7 +49,7 @@ class ChatApp {
     try {
       console.log(`Sending request to OpenRouter...`);
 
-      // Create request data with hardcoded model (from server.js)
+      // Create request data with hardcoded model
       const requestData = {
         messages: [
           {
@@ -77,11 +78,12 @@ class ChatApp {
       console.log(`Received response:`, data);
 
       if (response.ok) {
-        // Display the response
         const aiResponse = data.choices[0].message.content;
         const stampStr = stamp.toLocaleTimeString();
 
-        this.addToContainer(prompt, aiResponse, data.model, stamp);
+        // update the page
+        this.updateModelInfo(data.model);
+        this.addToContainer(prompt, aiResponse, stamp);
 
         // add to local storage
         this.addToHistory(stamp, prompt, aiResponse);
@@ -198,12 +200,11 @@ class ChatApp {
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  addToContainer(prompt, response, model, timestamp) {
+  addToContainer(prompt, response, timestamp) {
     // add current response
     this.$responseContainer.insertAdjacentHTML('beforeend', `
       <div class="prompt">${prompt}</div>
       <div class="response">${response}</div>
-      <p><strong>Model:</strong> ${model}</p>
       <p><small>Response time: ${timestamp.toLocaleTimeString()}</small></p>
     `);
   }
@@ -218,6 +219,13 @@ class ChatApp {
       `);
       console.log(entry);
     });
+  }
+
+  updateModelInfo(model) {
+    // display model info on the page
+    this.$modelInfo.insertAdjacentHTML('beforeend', `
+        <p><strong>Model:</strong> ${model}</p>
+      `);
   }
   
 }

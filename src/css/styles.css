@@ -41,7 +41,7 @@ button:hover {
   padding: 5px;
   border-radius: 4px;
   margin-top: 20px;
-  line-height: -3px;
+  line-height: 1.1;
 }
 .response {
   white-space: pre-wrap;
