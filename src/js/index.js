@@ -76,7 +76,7 @@ class ChatApp {
         messages: [
           {
             role: `user`,
-            content: this.getRecentHistoryForBot(stamp) + "\nLAST_PROMPT\n" + prompt,
+            content: this.getRecentHistoryForBot(stamp) + prompt,
           },
         ],
         model: 'deepseek/deepseek-chat:free' // Using the model from your server.js
@@ -171,6 +171,7 @@ class ChatApp {
             result.push(entry);
           }
         });
+        result.push("NEWEST_PROMPT_BELOW");
       }
     }
     else {
@@ -192,7 +193,7 @@ class ChatApp {
       if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
         
         // preface with some info for the chatbat
-        result += "\n\nRespond to the LAST_PROMPT below. \n\nDo not make verbal aknowledgements of this part: Answer or respond using all of the chat history here as context when it seems necessary (this especially imporant when the LAST_PROMPT is trying to address something the history. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation. Make sure to respond to the LAST_PROMPT. The rest of the history is only for context, but treat the most recent responses as if they're more contextually relevant. Keep the timestamps in mind. Each item in the history will have one. Also please don't act like you have to assist with something either. Be prepared for any situation.\n";
+        result += "\n\nRespond to the contents from below the NEWEST_PROMPT_BELOW. \n\nDo not make verbal aknowledgements of this part: Answer or respond using all of the chat history here as context when it seems necessary (this especially imporant when the NEWEST_PROMPT_BELOW is trying to address something in the history. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation. Make sure to respond to the NEWEST_PROMPT_BELOW. The rest of the history is only for context, but treat the most recent responses as if they're more contextually relevant. Keep the timestamps in mind. Each item in the history will have one. Also please don't act like you have to assist with something either. Be prepared for any situation.\n";
       
 
         history.forEach(entry => {
