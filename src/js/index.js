@@ -23,6 +23,7 @@ class ChatApp {
     this.$promptInput = document.getElementById('prompt-input');
     this.$responseContainer = document.getElementById('response-container');
     this.$prompts = this.$responseContainer.getElementsByClassName('prompt');
+    this.$responses = this.$responseContainer.getElementsByClassName('response');
     this.$responsePlaceholder = document.getElementById('response-placeholder');
     this.$modelInfo = document.getElementById('model-info');
     this.$retentionSelect = document.getElementById('retention');
@@ -116,7 +117,7 @@ class ChatApp {
         // reset the prompt field
         this.$promptInput.value = "";
 
-        this.scrollToElementStart(this.$prompts[this.$prompts.length - 1]);
+        this.scrollToElementStart(this.$responses[this.$responses.length - 1]);
         
       } else {
         this.toggleLoadingState();
@@ -218,6 +219,9 @@ class ChatApp {
   scrollToElementStart(element) {
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  scrollToElementEnd(element) {
+    element.scrollIntoView({ behavior: "smooth", block: "end" });
+  }
 
   addToContainer(timestamp, prompt, response) {
     // add current response
@@ -233,8 +237,8 @@ class ChatApp {
     let prompt;
     let response;
     historyObj.forEach(entry => {
-      prompt = entry.prompt.toString();
-      response = entry.response.toString();
+      prompt = entry.prompt; // removed .toString()
+      response = entry.response; // removed .toString()
       this.addToContainer(entry.timestamp, prompt, response);
       console.log(entry);
     });
