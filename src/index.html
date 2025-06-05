@@ -14,10 +14,10 @@
   <p id="description">A strange chatbot using OpenRouter</p>
   
   <div class="container">
-      <h2 id="log-title">Local Log</h2>
-      <div id="response-container">
-          <p id="response-placeholder">Response will appear here...</p>
-      </div>
+    <h2 id="log-title">Local Log</h2>
+    <div id="response-container">
+        <p id="response-placeholder">Response will appear here...</p>
+    </div>
   </div>
 
   <div id="model-info"></div>
@@ -25,8 +25,16 @@
   <div class="container">
       <h2>Send a Message</h2>
       <form id="chat-form">
-          <textarea id="prompt-input" placeholder="Enter your message here..."></textarea>
-          <button type="submit">Send</button>
+        <textarea id="prompt-input" placeholder="Enter your message here..."></textarea>
+        <label for="retention">Retention time:</label>
+        <select name="retention" id="retention" key="main">
+          <option value="">Choose time</option>
+          <option value="15m">15m</option>
+          <option value="1h">1h</option>
+          <option value="2h">2h</option>
+          <option value="5h">5h</option>
+        </select>
+        <button type="submit" value="Submit">Send</button>
       </form>
   </div>
   

@@ -11,6 +11,11 @@ import 'toastr/toastr.scss';
 // Environment configuration
 const APP_URL = APP_URL || 'http://localhost:3000';
 
+// time constants
+const SECOND = 1000; // 1000 milliseconds
+const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
+
 class ChatApp {
   constructor() {
     this.$form = document.getElementById('chat-form');
@@ -19,10 +24,10 @@ class ChatApp {
     this.$prompts = this.$responseContainer.getElementsByClassName('prompt');
     this.$responsePlaceholder = document.getElementById('response-placeholder');
     this.$modelInfo = document.getElementById('model-info');
+    this.$retentionSelect = document.getElementById('retention');
 
-    // Add event listeners
-    this.$form.onsubmit = this.onFormSubmit.bind(this);
-    
+    this.addEventListeners();
+   
     // supposed to make dev changes without reload
     if (module.hot) {
       // many changes still need a dev server restart (sadly)
@@ -33,6 +38,14 @@ class ChatApp {
     this.addHistoryToContainer(this.getRecentHistory(new Date()));
 
     this.scrollToElementStart(this.$form);
+    this.loadRetention();
+  }
+
+  addEventListeners() {
+    this.$form.onsubmit = this.onFormSubmit.bind(this);
+    this.$retentionSelect.addEventListener('change', () => {
+      localStorage.setItem('retention', this.$retentionSelect.value);
+    });
   }
 
   async onFormSubmit(event) {
@@ -54,7 +67,7 @@ class ChatApp {
         messages: [
           {
             role: `user`,
-            content: prompt + "\n" + this.getRecentHistoryForBot(stamp),
+            content: this.getRecentHistoryForBot(stamp) + "\nLAST_PROMPT\n" + prompt,
           },
         ],
         model: 'deepseek/deepseek-chat:free' // Using the model from your server.js
@@ -125,12 +138,7 @@ class ChatApp {
   // returns an array of history objects
   getRecentHistory(timestamp)
   {
-    // some time variables
-    const second = 1000;
-    const minute = 60 * second;
-    const hour = 60 * minute;
-
-    const myRange = minute * 60; // custom range
+    const myRange = this.calculateRetention(); // retention range
 
     let history = JSON.parse(localStorage.getItem('history') || '[]');
     let result = [];
@@ -158,12 +166,7 @@ class ChatApp {
   // returns a string with history meant for use with the prompt
   getRecentHistoryForBot(timestamp)
   {
-    // some time variables
-    const second = 1000;
-    const minute = 60 * second;
-    const hour = 60 * minute;
-
-    const myRange = minute * 60; // custom range
+    const myRange = this.calculateRetention(); // retention range
 
     let history = JSON.parse(localStorage.getItem('history') || '[]');
     let result = "";
@@ -174,7 +177,7 @@ class ChatApp {
       if (timestamp - new Date(history[history.length - 1].timestamp) < myRange) {
         
         // preface with some info for the chatbat
-        result += "Do not make verbal aknowledgements of this part: Answer or respond to above using the below information as context when it seems necessary. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation. Make sure to respond to the above. The below is only for context";
+        result += "\n\nRespond to the LAST_PROMPT below. \n\nDo not make verbal aknowledgements of this part: Answer or respond using all of the chat history here as context when it seems necessary (this especially imporant when the LAST_PROMPT is trying to address something the history. Don't say things like 'based on the context..' just keep it to yourself in order to preserve a natural conversation. Make sure to respond to the LAST_PROMPT. The rest of the history is only for context, but treat the most recent responses as if they're more contextually relevant. Keep the timestamps in mind. Each item in the history will have one. Also please don't act like you have to assist with something either. Be prepared for any situation.\n";
       
 
         history.forEach(entry => {
@@ -211,10 +214,14 @@ class ChatApp {
 
   addHistoryToContainer(historyObj)
   {
+    let prompt;
+    let response;
     historyObj.forEach(entry => {
+      prompt = entry.prompt.toString();
+      response = entry.response.toString();
       this.$responseContainer.insertAdjacentHTML('beforeend', `
-        <div class="prompt">${entry.prompt}</div>
-        <div class="response">${entry.response}</div>
+        <div class="prompt">${prompt}</div>
+        <div class="response">${response}</div>
         <p><small>Response time: ${new Date(entry.timestamp).toLocaleTimeString()}</small></p>
       `);
       console.log(entry);
@@ -226,6 +233,28 @@ class ChatApp {
     this.$modelInfo.innerHTML = `
         <p><strong>Model:</strong> ${model}</p>
       `;
+  }
+  loadRetention()
+  {
+    const retentionValue = localStorage.getItem('retention');
+    if (retentionValue) {
+      this.$retentionSelect.value = retentionValue;
+    }
+  }
+  // calculate the selection w/out regex
+  calculateRetention()
+  {
+    let val = this.$retentionSelect.value;
+    // if the last char is m for minutes
+    if (val[val.length - 1] === "m") {
+      val = Number(val.substr(0, val.length - 1)); // extract the number
+      val = val * MINUTE;
+    }
+    if (val[val.length - 1] === "h") {
+      val = Number(val.substr(0, val.length - 1)); // extract the number
+      val = val * HOUR;
+    }
+    return val;
   }
   
 }
