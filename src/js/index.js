@@ -35,10 +35,11 @@ class ChatApp {
     }
     this.$responsePlaceholder.style.visibility = 'hidden'; // default to hidden
     // get recent history and add it to the container
+
+    this.loadRetention(); // retention is needed for adding history
     this.addHistoryToContainer(this.getRecentHistory(new Date()));
 
     this.scrollToElementStart(this.$form);
-    this.loadRetention();
   }
 
   addEventListeners() {
