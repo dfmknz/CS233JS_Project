@@ -142,8 +142,8 @@ class ChatApp {
     history.push(entry);
 
     // Keep this amount of entries
-    if (history.length > 999) {
-        history = history.slice(-100);
+    if (history.length > 9999) {
+        history = history.slice(-4999);
     }
     // back to string we go
     localStorage.setItem('history', JSON.stringify(history));
