@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "openrounterapp",
   "version": "1.0.3",
   "description": "A chatbot with local context retention using OpenRouter",
